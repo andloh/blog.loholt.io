@@ -1,0 +1,5 @@
+footer:
+  - name: github
+    ref: "https://github.com/andloh"
+    external: true
+    icon: gblog_github
