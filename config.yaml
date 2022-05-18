@@ -250,7 +250,7 @@ params:
   analytics:
     enable: true
     google:
-      id: '315580889'
+      id: 'G-K43NGWG8SP'
       anonymizeIP: true
     fathom:
       id: ''
