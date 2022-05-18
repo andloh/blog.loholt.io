@@ -260,6 +260,18 @@ creation_rules:
 ```
 This example will select the targeted keypair based on which folder you are standing in when running `sops --encrypt`
 
+## Useful commands and tips
+
+- If you want do decrypt your secret _and_ test/verify it against the cluster at the same time:
+  ```bash
+  sops -d mysecret.yaml | k diff -f -
+  ```
+- You can edit your secret after it has been encrypted, at least the _non encrypted_ part of it. To do this you need to open the file with `sops` not a normal text editor e.g `vim`.
+  ```bash
+  sops mysecret.yaml
+  # Edit your file and save
+  ```
+
 ## Verdict
 
 All in all, a very good, secure and simple to use tool for _storing_ your secrets in git.
