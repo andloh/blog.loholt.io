@@ -224,7 +224,7 @@ spec:
 With this configuration in place, flux will decrypt and deploy your secret to your targeted Kubernetes cluster.
 To verify, make sure your `Kustomization` has synced and take a look at your secret inside Kubernetes
 
-## Decrypt your secret on the fly for debugging
+## Decrypt and edit your secret on the fly for debugging
 
 This is one of the main reasons i like `sops` better than `Sealed Secrets`. You can decrypt yor secret locally with just doing: 
 
@@ -241,7 +241,7 @@ The easiest way to encrypt a secret object with multiple keys is just to add ano
 ## Age and Sops configuration
 
 ### Age
-Your private keys must be stored in `~/.config/sops/age/keys.txt` when working with `sops`. You can have multiple keypairs stored in that single file. `Sops` will know which private key to use when you run `sops` against a encrypted file, because the public key is annotated in all encrypted secret object's.
+Your private keys must be stored in `~/.config/sops/age/keys.txt` when working with `sops`, you can also specify your own path with `export SOPS_AGE_KEY_FILE=/my/secret/path`. You can have multiple keypairs stored in that single file. `Sops` will know which private key to use when you run `sops` against a encrypted file, because the public key is annotated in all encrypted secret object's. 
 
 ### Sops
 
@@ -262,6 +262,10 @@ This example will select the targeted keypair based on which folder you are stan
 
 ## Useful commands and tips
 
+- `cat` your secret
+  ```bash
+  sops -d mysecret.yaml
+  ```
 - If you want do decrypt your secret _and_ test/verify it against the cluster at the same time:
   ```bash
   sops -d mysecret.yaml | k diff -f -
@@ -270,6 +274,10 @@ This example will select the targeted keypair based on which folder you are stan
   ```bash
   sops mysecret.yaml
   # Edit your file and save
+  ```
+- Send encrypted file to new file
+  ```bash
+  sops -e test.yaml > encryptedTest.yaml
   ```
 
 ## Verdict
