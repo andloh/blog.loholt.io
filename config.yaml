@@ -103,10 +103,10 @@ params:
       gravatarEmail: ''
       avatarURL: /images/loholt-andreas.png
       title: 'Andreas Loholt'
-      subtitle: Writing about The Cloud Native Ecosystem
+      subtitle: Writing about the Cloud Native Ecosystem
       typeit: true
       social: true
-      disclaimer: '...mostly stuff relatet to Kubernetes and Conatiner technology' 
+      disclaimer: '...mostly stuff related to Kubernetes and Container technology' 
     posts:
       enable: true
       paginate: 6
