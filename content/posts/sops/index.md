@@ -35,7 +35,7 @@ While k8s's default secret object is the preferred way to give containers our se
 
 The most obvious one is that your value you give the secret key is not encrypted in any way, just encoded with base64. The main purpose with this is that your value should not be readable to the naked eye. If we where to push your encoded secret to e.g github, your secret would then be exposed.
 
-To solve this issue, we need to have a way of encrypting our secrets before we push it to our git and a way to make our continuous delivery to decrypt and deploy av secret to our Kubernetes clusters. 
+To solve this issue, we need to have a way of encrypting our secrets before we push them to git, while our continuous delivery pipelines decrypt and deploy them.
 
 ## Why sops? 
 
@@ -52,7 +52,7 @@ I have worked with all the providers above and `sops` comes out to be the most s
 
 Sealed Secrets from Bitnami is also a great tool, but it's not as practical to work with if you compare it to `sops`.
 
-I will not go into detail with the Vaults in this post, stay tuned for a separate posts about working with Vault's in Kubernetes ;)
+I will not go into detail with the Vaults in this post, stay tuned for a separate posts about working with Vaults in Kubernetes ;)
 
 {{< admonition type=note title="Note" open=true >}}
 `Sops` is actually not a tool made for Kubernetes. It's an editor of encrypted files that supports YAML, JSON, ENV, INI and BINARY formats. It also has many integrations that it can encrypt with.
