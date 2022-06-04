@@ -35,11 +35,11 @@ While k8s's default secret object is the preferred way to give containers our se
 
 The most obvious one is that your value you give the secret key is not encrypted in any way, just encoded with base64. The main purpose with this is that your value should not be readable to the naked eye. If we where to push your encoded secret to e.g github, your secret would then be exposed.
 
-To solve this issue, we need to have a way of encrypting our secrets before we push it to our git and a way to make our continuous delivery too decrypt and deploy av secret to our Kubernetes clusters. 
+To solve this issue, we need to have a way of encrypting our secrets before we push it to our git and a way to make our continuous delivery to decrypt and deploy av secret to our Kubernetes clusters. 
 
 ## Why sops? 
 
-Today we have multiple options for handling our secrets a secure way when they are consumed by our applications. To list a few:
+Today we have multiple options for handling our secrets in a secure way when they are consumed by our applications. To list a few:
 
 - [Mozilla Sops](https://github.com/mozilla/sops)
 - [SealedSecrets](https://github.com/bitnami-labs/sealed-secrets)
@@ -48,11 +48,11 @@ Today we have multiple options for handling our secrets a secure way when they a
 
 The first two options is solely to solve the GitOps problem
 
-Myself have worked with all the providers above and `sops` comes out to be the most simples one. Due to the fact that it is so easy to use, configure and integrates very well with FluxCD.
+I have worked with all the providers above and `sops` comes out to be the most simples one. Due to the fact that it is so easy to use, configure and integrates very well with FluxCD.
 
 Sealed Secrets from Bitnami is also a great tool, but it's not as practical to work with if you compare it to `sops`.
 
-I will not go into detail with the Vault's in this post, stay tuned for a separate posts about working with Vault's in Kubernetes ;)
+I will not go into detail with the Vaults in this post, stay tuned for a separate posts about working with Vault's in Kubernetes ;)
 
 {{< admonition type=note title="Note" open=true >}}
 `Sops` is actually not a tool made for Kubernetes. It's an editor of encrypted files that supports YAML, JSON, ENV, INI and BINARY formats. It also has many integrations that it can encrypt with.
@@ -60,10 +60,10 @@ I will not go into detail with the Vault's in this post, stay tuned for a separa
 
 ## Prerequisites
 
-You need access to a Kubernetes cluster with FluxCD thats already syncing configuration from a git repository.
+You need access to a Kubernetes cluster with FluxCD that's already syncing configuration from a git repository.
 
 {{< admonition type=note title="Note" open=true >}}
-ArgoCD does not have `sops` integration, yet. Hope they can come with trough with this soon as it would be nice to have the option to use it with Argo too. It's possible to use it with Argo, but it will require you to add all the dependencies to ArgoCD's container image. Which is a lot of hassle to maintain, due to the rapid development around this tool. 
+ArgoCD does not have `sops` integration, yet. I hope they can come with through with this soon as it would be nice to have the option to use it with Argo too. It's possible to use it with Argo, but it will require you to add all the dependencies to ArgoCD's container image. Which is a lot of hassle to maintain, due to the rapid development around this tool. 
 {{< /admonition >}}
 
 ## Installation
@@ -98,9 +98,9 @@ FluxCD does support the following encryption tools
 - OpenPGP
 - Age
 
-It also supports encryption with various cloud providers vault's and KMS's.
+It also supports encryption with various cloud providers vaults and KMSs.
 
-We will choose `age` for this scenario, because its simple, yet secure and modern.
+We will choose `age` for this scenario, because it's simple, yet secure and modern.
 
 
 ## Generating the private key
@@ -197,7 +197,7 @@ Looks scary right? Do not worry, this is how it should look. This file is now sa
 
 ## Deploy your secret
 
-To deploy our secret we need to go trough flux, thats also means that we will need to push it to git. You also need to specify in the flux `Kustomization` which encryption method flux shall use.
+To deploy our secret we need to go through Flux, thats also means we will need to push it to git. You also need to specify in the Flux `Kustomization` which encryption method flux shall use.
 
 Update or create your `Kustomization` with the `spec.decryption` parameter. 
 Here we specify our decryption provider and the secret with our private `age` key.
@@ -222,11 +222,11 @@ spec:
 ```
 
 With this configuration in place, flux will decrypt and deploy your secret to your targeted Kubernetes cluster.
-To verify, make sure your `Kustomization` has synced and take a look at your secret inside Kubernetes
+To verify, make sure your `Kustomization` has synced, then take a look at your secret inside Kubernetes.
 
 ## Decrypt and edit your secret on the fly for debugging
 
-This is one of the main reasons i like `sops` better than `Sealed Secrets`. You can decrypt yor secret locally with just doing: 
+This is one of the main reasons i like `sops` better than `Sealed Secrets`. You can decrypt your secret locally with just doing: 
 
 ```bash
 sops mysecret.yaml
@@ -241,7 +241,7 @@ The easiest way to encrypt a secret object with multiple keys is just to add ano
 ## Age and Sops configuration
 
 ### Age
-Your private keys must be stored in `~/.config/sops/age/keys.txt` when working with `sops`, you can also specify your own path with `export SOPS_AGE_KEY_FILE=/my/secret/path`. You can have multiple keypairs stored in that single file. `Sops` will know which private key to use when you run `sops` against a encrypted file, because the public key is annotated in all encrypted secret object's. 
+Your private keys must be stored in `~/.config/sops/age/keys.txt` when working with `sops`, you can also specify your own path with `export SOPS_AGE_KEY_FILE=/my/secret/path`. You can have multiple keypairs stored in that single file. `Sops` will know which private key to use when you run `sops` against an encrypted file, because the public key is annotated in all the encrypted secret objects. 
 
 ### Sops
 
@@ -266,7 +266,7 @@ This example will select the targeted keypair based on which folder you are stan
   ```bash
   sops -d mysecret.yaml
   ```
-- If you want do decrypt your secret _and_ test/verify it against the cluster at the same time:
+- If you want to decrypt your secret _and_ test/verify it against the cluster at the same time:
   ```bash
   sops -d mysecret.yaml | k diff -f -
   ```
@@ -294,5 +294,5 @@ All in all, a very good, secure and simple to use tool for _storing_ your secret
 
 ### The _not_ so good
 - The private keys are still stored as base64 encoded Kubernetes secrets. You will need to lock this down with RBAC
-  - An alternative integration with a Vault will solve this to some extend.
+  - An alternative integration with a Vault will solve this to some extent.
 - No support _yet_ for usage with ArgoCD
