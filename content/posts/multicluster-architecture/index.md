@@ -31,13 +31,21 @@ Manage your secrets using **GitOps** and **Sops**
 
 While managing multiple Kubernetes cluster for different environments for years, I have seen a consistent need for corrolating i.e monitoring, config management, secret and security tools, to name a few. 
 
-To be more specific, I will name a few tools that wil benefit from residing in a `Hub Cluster` rather than a `Spoke Cluster`.
+To be more specific, I will name a few tools that wil benefit from residing in a `Hub Cluster` rather as a separate instance in a `Spoke Cluster`.
 
 - Grafana
 - ArgoCD
 - ACS / Stackrox
 - Hasicorp Vault
 - Kibana/Opensearch Dashboards
+
+### Grafana
+
+## Security
+
+## A single Grafana for all environments
+
+Grafana is a popular tool for visualising your metrics, logs and traces from your cloud native applications, infrastructure and middleware. 
 
 
 
