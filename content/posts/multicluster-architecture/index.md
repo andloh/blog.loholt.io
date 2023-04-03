@@ -3,7 +3,7 @@ title: "Kubernetes hub cluster architecture"
 subtitle: ""
 date: 2023-03-28
 tags:
-  - Open Source
+  - OpenSource
   - Openshift
   - GitOps
   - Kubernetes
@@ -24,30 +24,36 @@ comment:
 
 ---
 
-Manage your secrets using **GitOps** and **Sops**
+Discovering the bennefits and possibilities of a Kubernetes `Hub Cluster`.
 <!--more-->
 
-## Why have a hub cluster
+## What is a hub cluster?
 
-While managing multiple Kubernetes cluster for different environments for years, I have seen a consistent need for corrolating i.e monitoring, config management, secret and security tools, to name a few. 
+Myself would describe a `Hub Cluster` as a Kubernetes cluster that has the roles `common` or `mgmt`. It will be a home for tools and applications you eitherway would have had installed on your *targeted clusters*. Instead of having to install and maintain one or more instances of that tool or application on all your workload clusters, you can limit the scope by having that tool avalible on a *shared* cluster, aka a `Hub Cluster`.
 
-To be more specific, I will name a few tools that wil benefit from residing in a `Hub Cluster` rather as a separate instance in a `Spoke Cluster`.
+A very good example application candidate to have on a `Hub Cluster` is *Grafana*. It is very common to install and maintain one Grafana instance foreach environment today. It's highly unpractical for all users innvolved, due to access and more url's to remember. But the most valuable reason to have one instance is that you can easily compare and correlate your log, trace and timeseries data between your respected environments. This gives values for all parties involved, developers, operations and other stakeholders. 
 
-- Grafana
-- ArgoCD
-- ACS / Stackrox
-- Hasicorp Vault
-- Kibana/Opensearch Dashboards
+## What can your `Hub Cluster` contain?
 
-### Grafana
+A `Hub Cluster` can contain basicly whatever you se fit your purpose. Here is a copule of points that I have discovered over the years of what your `Hub Cluster` *should* or *should not* contain.
+
+*What can a hub cluster contain*
+
+- Your CI/CD infrastructure
+- Secret & access management
+- Monitoring
+- IDP Federation
+- Storage orchestration
+- Policy management
+
+*What a hub cluster should **NOT** contain*
+
+- End user workload
+- Application dependent middleware. Cache, queue etc.
+
+You see that the pattern here is that your `Hub Cluster` *should not contain anything that can or will affect your end-user application at runtime*. So this type of architecture must be designed with *fault tolerance* in mind. Meaning that all your applications on the targeted clusters should not be affected if a `Hub Cluster` outage occurs. 
 
 ## Security
-
-## A single Grafana for all environments
-
-Grafana is a popular tool for visualising your metrics, logs and traces from your cloud native applications, infrastructure and middleware. 
-
-
 
 ## Why sops? 
 
